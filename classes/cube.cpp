@@ -18,7 +18,6 @@ Face makeTestFace() {
 }
 
 void rotateFace(Face &value) {
-
     // Corners
     int holder = value[0][0];
 
@@ -33,7 +32,6 @@ void rotateFace(Face &value) {
     value[1][0] = value[2][1];
     value[2][1] = value[1][2];
     value[1][2] = holder;
-
 }
 
 void printFace(Face &value) {
