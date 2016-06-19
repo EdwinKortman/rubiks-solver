@@ -1,36 +1,15 @@
-#include <iostream>
 #include <vector>
-
-class Cube
-{
-    private:
-        int edgeSize;
-
-    public:
-        void setEdge(int size);
-        int getEdge(void);
-        Cube(int size);
-};
-
-
-Cube::Cube(int size)
-{
-    edgeSize = size;
-}
-
-void Cube::setEdge(int size)
-{
-    edgeSize = size;
-}
-
-int Cube::getEdge(void)
-{
-    return edgeSize;
-}
+#include "classes/cube.h"
+#include <iostream>
 
 
 int main(int argc, char **argv)
 {
-    Cube Cube(3);
-    std::cout << "Size of edge: " << Cube.getEdge() << std::endl;
+    Cube cube;
+//    cube.print();
+
+    Face face = makeTestFace();
+    printFace(face);
+    rotateFace(face);
+    printFace(face);
 }
