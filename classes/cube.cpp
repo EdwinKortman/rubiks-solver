@@ -1,37 +1,41 @@
 #include "cube.h"
 #include <iostream>
 
-Face makeFace(int value) {
+int modulo(int x, int y) {
+    int r = x % y;
+    if (r < 0) {
+        return r + y;
+    }
+    return r;
+}
+
+Face makeFace(int i) {
+    int j = i * 10;
+
     return {{
-        {value, value, value},
-        {value, value, value},
-        {value, value, value}
+        {1 + j, 2 + j, 3 + j},
+        {4 + j, 5 + j, 6 + j},
+        {7 + j, 8 + j, 9 + j},
     }};
 }
 
-Face makeTestFace() {
-    return {{
-        {1, 2, 3},
-        {1, 2, 3},
-        {1, 2, 3}
-    }};
-}
+void rotateFace(Face &value, int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        // Corners
+        int holder = value[0][0];
 
-void rotateFace(Face &value) {
-    // Corners
-    int holder = value[0][0];
+        value[0][0] = value[2][0];
+        value[2][0] = value[2][2];
+        value[2][2] = value[0][2];
+        value[0][2] = holder;
 
-    value[0][0] = value[2][0];
-    value[2][0] = value[2][2];
-    value[2][2] = value[0][2];
-    value[0][2] = holder;
-
-    // Edges
-    holder = value[0][1];
-    value[0][1] = value[1][0];
-    value[1][0] = value[2][1];
-    value[2][1] = value[1][2];
-    value[1][2] = holder;
+        // Edges
+        holder = value[0][1];
+        value[0][1] = value[1][0];
+        value[1][0] = value[2][1];
+        value[2][1] = value[1][2];
+        value[1][2] = holder;
+    }
 }
 
 void printFace(Face &value) {
@@ -41,28 +45,132 @@ void printFace(Face &value) {
     }
 }
 
-Cube::Cube()
-{
+Cube::Cube() {
     for (int i = 0; i < 6; ++i) {
         structure[i] = makeFace(i + 1);
+    }
+}
+
+void Cube::rotateX(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        Face holder = structure[BACK];
+
+        structure[BACK] = structure[UP];
+        structure[UP] = structure[FRONT];
+        structure[FRONT] = structure[DOWN];
+        structure[DOWN] = holder;
+        rotateFace(structure[RIGHT], 1);
+        rotateFace(structure[LEFT], -1);
+    }
+}
+
+void Cube::rotateY(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        Face holder = structure[UP];
+
+        structure[UP] = structure[LEFT];
+        structure[LEFT] = structure[DOWN];
+        structure[DOWN] = structure[RIGHT];
+        structure[RIGHT] = holder;
+        rotateFace(structure[FRONT], 1);
+        rotateFace(structure[BACK], -1);
+    }
+}
+
+void Cube::rotateZ(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        Face holder = structure[FRONT];
+
+        structure[FRONT] = structure[RIGHT];
+        structure[RIGHT] = structure[BACK];
+        structure[BACK] = structure[LEFT];
+        structure[LEFT] = holder;
+        rotateFace(structure[UP], 1);
+        rotateFace(structure[DOWN], -1);
+    }
+}
+
+void Cube::rotateUp() {
+    rotateX(-1);
+    rotateFront();
+    rotateX(+1);
+}
+
+void Cube::rotateLeft() {
+
+}
+
+void Cube::rotateDown() {
+
+}
+
+void Cube::rotateRight() {
+
+}
+
+void Cube::rotateBack() {
+
+}
+
+void Cube::rotateFront() {
+    int holder = structure[LEFT][2][0];
+
+    // Corners
+    structure[LEFT][2][0] = structure[DOWN][2][0];
+    structure[DOWN][2][0] = structure[RIGHT][2][0];
+    structure[RIGHT][2][0] = structure[UP][2][0];
+    structure[UP][2][0] = holder;
+
+    // Edges
+    holder = structure[LEFT][2][1];
+    structure[LEFT][2][1] = structure[DOWN][2][1];
+    structure[DOWN][2][1] = structure[RIGHT][2][1];
+    structure[RIGHT][2][1] = structure[UP][2][1];
+    structure[UP][2][1] = holder;
+
+
+    rotateFace(structure[FRONT], 1);
+}
+
+
+void Cube::rotate(Side side) {
+    switch(side) {
+        case UP:
+            rotateUp();
+            break;
+        case LEFT:
+            rotateLeft();
+            break;
+        case DOWN:
+            rotateDown();
+            break;
+        case RIGHT:
+            rotateRight();
+            break;
+        case BACK:
+            rotateBack();
+            break;
+        case FRONT:
+            rotateFront();
+            break;
     }
 }
 
 void Cube::print()
 {
     for (int i = 0; i < 3; ++i) {
-        std::cout << std::string(18, ' ') << structure[REAR][i] << std::endl;
+        std::cout << std::string(24, ' ') << structure[BACK][i] << std::endl;
     }
 
     for (int i = 0; i < 3; ++i) {
         std::cout <<
-            structure[TOP][i] <<
+            structure[UP][i] <<
             structure[LEFT][i] <<
-            structure[BOTTOM][i] <<
+            structure[DOWN][i] <<
             structure[RIGHT][i] << std::endl;
     }
 
     for (int i = 0; i < 3; ++i) {
-        std::cout << std::string(18, ' ') << structure[FRONT][i] << std::endl;
+        std::cout << std::string(24, ' ') << structure[FRONT][i] << std::endl;
     }
 }

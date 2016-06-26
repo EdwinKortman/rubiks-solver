@@ -16,10 +16,6 @@ std::ostream &operator<<(std::ostream &out, const std::array<T, n> &value)
 using Face = std::array<std::array<int, 3>, 3>;
 Face makeFace(int value);
 
-Face makeTestFace();
-
-
-void rotateFace(Face &value);
 void printFace(Face &value);
 
 class Cube
@@ -27,17 +23,29 @@ class Cube
     public:
         std::array<Face, 6> structure;
         enum Side {
-            TOP,
+            UP,
             LEFT,
-            BOTTOM,
+            DOWN,
             RIGHT,
-            REAR,
+            BACK,
             FRONT
         };
+
+    private:
+        void rotateX(int n);
+        void rotateY(int n);
+        void rotateZ(int n);
+        void rotateUp();
+        void rotateLeft();
+        void rotateDown();
+        void rotateRight();
+        void rotateBack();
+        void rotateFront();
 
     public:
         Cube();
         void print();
+        void rotate(Side side);
 };
 
 inline std::ostream &operator<<(std::ostream &out, const Cube &value)
