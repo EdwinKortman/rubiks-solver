@@ -132,7 +132,7 @@ void Cube::rotateBack(int n) {
 
 void Cube::rotateFront(int n) {
     for (int i = 0; i < modulo(n, 4); ++i) {
-        std::array holder = structure[UP][2];
+        std::array<int, 3> holder = structure[UP][2];
 
         structure[UP][2] = structure[LEFT][2];
         structure[LEFT][2] = structure[DOWN][2];
@@ -140,13 +140,13 @@ void Cube::rotateFront(int n) {
         structure[RIGHT][2] = holder;
 
 
-        rotateFace(structure[FRONT], 1);
+        rotateFace(structure[FRONT], -1);
     }
 }
 
 void Cube::rotateFrontInverse(int n) {
     for (int i = 0; i < modulo(n, 4); ++i) {
-        std::array holder = structure[UP][2];
+        std::array<int, 3> holder = structure[UP][2];
 
         structure[UP][2] = structure[RIGHT][2];
         structure[RIGHT][2] = structure[DOWN][2];
