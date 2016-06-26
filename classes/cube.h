@@ -35,17 +35,18 @@ class Cube
         void rotateX(int n);
         void rotateY(int n);
         void rotateZ(int n);
-        void rotateUp();
-        void rotateLeft();
-        void rotateDown();
-        void rotateRight();
-        void rotateBack();
-        void rotateFront();
+        void rotateUp(int n);
+        void rotateLeft(int n);
+        void rotateDown(int n);
+        void rotateRight(int n);
+        void rotateBack(int n);
+        void rotateFront(int n);
+        void rotateFrontInverse(int n);
 
     public:
         Cube();
         void print();
-        void rotate(Side side);
+        void rotate(Side side, int n);
 };
 
 inline std::ostream &operator<<(std::ostream &out, const Cube &value)

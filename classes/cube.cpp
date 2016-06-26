@@ -90,68 +90,94 @@ void Cube::rotateZ(int n) {
     }
 }
 
-void Cube::rotateUp() {
-    rotateX(-1);
-    rotateFront();
-    rotateX(+1);
+void Cube::rotateUp(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        rotateX(-1);
+        rotateFront(+1);
+        rotateX(+1);
+    }
 }
 
-void Cube::rotateLeft() {
-
+void Cube::rotateLeft(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        rotateZ(-1);
+        rotateFrontInverse(+1);
+        rotateZ(+1);
+    }
 }
 
-void Cube::rotateDown() {
-
+void Cube::rotateDown(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        rotateX(+1);
+        rotateFrontInverse(+1);
+        rotateX(-1);
+    }
 }
 
-void Cube::rotateRight() {
-
+void Cube::rotateRight(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        rotateZ(+1);
+        rotateFront(+1);
+        rotateZ(-1);
+    }
 }
 
-void Cube::rotateBack() {
-
+void Cube::rotateBack(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        rotateX(+2);
+        rotateFrontInverse(+1);
+        rotateX(-2);
+    }
 }
 
-void Cube::rotateFront() {
-    int holder = structure[LEFT][2][0];
+void Cube::rotateFront(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        std::array holder = structure[UP][2];
 
-    // Corners
-    structure[LEFT][2][0] = structure[DOWN][2][0];
-    structure[DOWN][2][0] = structure[RIGHT][2][0];
-    structure[RIGHT][2][0] = structure[UP][2][0];
-    structure[UP][2][0] = holder;
-
-    // Edges
-    holder = structure[LEFT][2][1];
-    structure[LEFT][2][1] = structure[DOWN][2][1];
-    structure[DOWN][2][1] = structure[RIGHT][2][1];
-    structure[RIGHT][2][1] = structure[UP][2][1];
-    structure[UP][2][1] = holder;
+        structure[UP][2] = structure[LEFT][2];
+        structure[LEFT][2] = structure[DOWN][2];
+        structure[DOWN][2] = structure[RIGHT][2];
+        structure[RIGHT][2] = holder;
 
 
-    rotateFace(structure[FRONT], 1);
+        rotateFace(structure[FRONT], 1);
+    }
+}
+
+void Cube::rotateFrontInverse(int n) {
+    for (int i = 0; i < modulo(n, 4); ++i) {
+        std::array holder = structure[UP][2];
+
+        structure[UP][2] = structure[RIGHT][2];
+        structure[RIGHT][2] = structure[DOWN][2];
+        structure[DOWN][2] = structure[LEFT][2];
+        structure[LEFT][2] = holder;
+
+
+        rotateFace(structure[FRONT], -1);
+    }
 }
 
 
-void Cube::rotate(Side side) {
+void Cube::rotate(Side side, int n) {
     switch(side) {
         case UP:
-            rotateUp();
+            rotateUp(n);
             break;
         case LEFT:
-            rotateLeft();
+            rotateLeft(n);
             break;
         case DOWN:
-            rotateDown();
+            rotateDown(n);
             break;
         case RIGHT:
-            rotateRight();
+            rotateRight(n);
             break;
         case BACK:
-            rotateBack();
+            rotateBack(n);
             break;
         case FRONT:
-            rotateFront();
+            rotateFront(n);
             break;
     }
 }
