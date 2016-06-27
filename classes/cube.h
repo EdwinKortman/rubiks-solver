@@ -14,7 +14,8 @@ std::ostream &operator<<(std::ostream &out, const std::array<T, n> &value)
 }
 
 using Face = std::array<std::array<int, 3>, 3>;
-Face makeFace(int value);
+Face makeStaticFace(int value);
+Face makeFace(std::array<int, 9>);
 
 void printFace(Face &value);
 
@@ -47,6 +48,7 @@ class Cube
         Cube();
         void print();
         void rotate(Side side, int n);
+        void create(std::array<int, 54>);
 };
 
 inline std::ostream &operator<<(std::ostream &out, const Cube &value)

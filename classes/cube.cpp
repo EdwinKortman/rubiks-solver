@@ -1,5 +1,6 @@
 #include "cube.h"
 #include <iostream>
+#include <vector>
 
 int modulo(int x, int y) {
     int r = x % y;
@@ -9,13 +10,21 @@ int modulo(int x, int y) {
     return r;
 }
 
-Face makeFace(int i) {
+Face makeStaticFace(int i) {
     int j = i * 10;
 
     return {{
         {1 + j, 2 + j, 3 + j},
         {4 + j, 5 + j, 6 + j},
         {7 + j, 8 + j, 9 + j},
+    }};
+}
+
+Face makeFace(std::array<int, 9> values) {
+    return {{
+        {values[0], values[1], values[2]},
+        {values[3], values[4], values[5]},
+        {values[6], values[7], values[8]},
     }};
 }
 
@@ -47,7 +56,7 @@ void printFace(Face &value) {
 
 Cube::Cube() {
     for (int i = 0; i < 6; ++i) {
-        structure[i] = makeFace(i + 1);
+        structure[i] = makeStaticFace(i + 1);
     }
 }
 
@@ -140,7 +149,7 @@ void Cube::rotateFront(int n) {
         structure[RIGHT][2] = holder;
 
 
-        rotateFace(structure[FRONT], -1);
+        rotateFace(structure[FRONT], +1);
     }
 }
 
@@ -154,7 +163,7 @@ void Cube::rotateFrontInverse(int n) {
         structure[LEFT][2] = holder;
 
 
-        rotateFace(structure[FRONT], -1);
+        rotateFace(structure[FRONT], +1);
     }
 }
 
@@ -198,5 +207,22 @@ void Cube::print()
 
     for (int i = 0; i < 3; ++i) {
         std::cout << std::string(24, ' ') << structure[FRONT][i] << std::endl;
+    }
+}
+
+void Cube::create(std::array<int, 54> values) {
+    for (int i = 0; i < 1; ++i) {
+        int n = i * 9;
+        if (i == 0) n = 0;
+
+        std::array<int, 9> side;
+        for (int j = 0; j < 9; ++j) {
+            std::cout << "Side " << i << " at pos " << j << " gets value " << values[n + j] << std::endl;
+            side[j] = values[n + j];
+        }
+
+        std::cout << structure[i] << std::endl;
+        structure[i] = makeFace(side);
+        std::cout << structure[i] << std::endl;
     }
 }

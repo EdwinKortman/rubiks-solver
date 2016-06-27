@@ -1,17 +1,19 @@
 #include <vector>
 #include "classes/cube.h"
+#include "classes/testsuite.h"
 #include <iostream>
 
 
 void printRotate() {
-    Cube cube;
-    cube.print();
+//    std::cout << "Base cube __c" << std::endl;
+//    Cube cube;
+//    cube.print();
+//
+//    std::cout << std::endl;
 
-    std::cout << std::endl << std::endl;
-
-    Cube cube2;
-    cube2.rotate(Cube::FRONT, 1);
-    cube2.print();
+    std::cout << "Test suite" << std::endl;
+    TestSuite testsuite;
+    testsuite.execute();
 }
 
 int main(int argc, char **argv)
